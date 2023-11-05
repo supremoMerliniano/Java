@@ -1,6 +1,5 @@
 # Collections API
 
-
 ## Collection
 
 Is a framework that provides an architecture to store and manipulate the group of objects.
@@ -77,7 +76,7 @@ mapName.put(key, value)
 mapName.keySet();
 ```
 
-**Get all values:** 
+**Get all values:**
 
 ```java
 mapName.values();
