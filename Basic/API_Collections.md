@@ -37,6 +37,20 @@ Set setName = new HashSet();
 setName.add(element);
 ```
 
+### Linked Hash Set
+
+Follows the aggregation order. Doesn't allow to store duplicate elements.
+
+```java
+LinkedHashSet<Generic> setName = new LinkedHashSet<Generics>();
+```
+
+**Adding elements:***
+
+```java
+setName.add(element);
+```
+
 ## Map
 
 **Definition:**
