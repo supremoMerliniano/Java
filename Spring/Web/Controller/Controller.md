@@ -1,6 +1,7 @@
+# RestController
+
 _Spring RestController_ annotation is used to create RESTful web services using _Spring_ MVC.
 To indicate that we are using a _RestController_ in the header we use the `@RestController` annotation
-
 
 ## Response Entity
 
@@ -38,7 +39,6 @@ public class MyController {
 
 ```
 
-
 ## Request Mapping
 
 Is used to map HTTP requests to methods in your controller classes. It is one of the fundamental annotations for creating RESTful web services and handling incoming HTTP requests. The annotation is used to define which HTTP methods (GET, POST, PUT, DELETE, etc.) should be handled by specific methods in your Spring controller.
@@ -46,10 +46,10 @@ Is used to map HTTP requests to methods in your controller classes. It is one of
 ```java
 @RestController @RequestMapping("/api")
 public class MyController { 
-	@RequestMapping(value = "/hello", method = RequestMethod.GET) 
-	public String helloWorld() { 
-		return "Hello, World!"; 
-	}
+    @RequestMapping(value = "/hello", method = RequestMethod.GET) 
+    public String helloWorld() { 
+         return "Hello, World!"; 
+     }
 }
 ```
 
@@ -60,7 +60,6 @@ public class MyController {
 
 So, when a client sends an HTTP GET request to the URL `"/api/hello"`, the `helloWorld` method will be invoked, and the returned string "Hello, World!" will be sent back as the response.
 It's worth noting that starting from Spring 4.3, you can use more specific annotations like `@GetMapping`, `@PostMapping`, `@PutMapping`, and `@DeleteMapping` to make your code more readable and concise.
-
 
 ## Get Mapping
 
@@ -86,8 +85,7 @@ In this example:
 3. The `@GetMapping("/hello")` annotation is applied to the `helloWorld` method. This annotation indicates that the method should be triggered when an HTTP GET request is made to the "/api/hello" URL.
 4. The method `helloWorld()` returns the string "Hello, World!" which will be sent back as the response when the corresponding URL is accessed with a GET request.
 
-
-## Post Mapping
+## POST
 
 Is an annotation designed for handling HTTP POST requests.
 
@@ -106,9 +104,29 @@ public ResponseEntity<PizzaEntity> add(@RequestBody PizzaEntity pizza) {
 2. `ResponseEntity<PizzaEntity>`: This specifies that the method will return a `ResponseEntity` containing a `PizzaEntity`. `ResponseEntity` allows you to control the HTTP response, including status codes and headers.
 3. `@RequestBody PizzaEntity pizza`: This annotation tells Spring to bind the request body to the `pizza` parameter. It's expecting the request body to be in JSON format that can be mapped to a `PizzaEntity` object.
 4. This is an `if` statement that checks two conditions:
-	- `pizza.getIdPizza() == null`: Checks if the `idPizza` of the `PizzaEntity` is `null`. This would mean that the pizza doesn't have an ID yet, which implies it's a new pizza.
-	- `!this.pizzaService.exists(pizza.getIdPizza())`: Calls a method `exists()` on a `pizzaService` object. This method likely checks if a pizza with the given ID already exists in the database.
-	If either of these conditions is true, it means that the pizza is new or doesn't already exist in the database. And that would return a `ResponseEntity` with a 200 OK status code and a body containing the saved `PizzaEntity`. `this.pizzaService.save(pizza)` likely saves the `PizzaEntity` to a database and returns the saved instance. If none of the conditions in the `if` statement were met, this line is executed. It returns a `ResponseEntity` with a 400 Bad Request status code. `.build()` creates a `ResponseEntity` with no body.
+   - `pizza.getIdPizza() == null`: Checks if the `idPizza` of the `PizzaEntity` is `null`. This would mean that the pizza doesn't have an ID yet, which implies it's a new pizza.
+   - `!this.pizzaService.exists(pizza.getIdPizza())`: Calls a method `exists()` on a `pizzaService` object. This method likely checks if a pizza with the given ID already exists in the database.
+    If either of these conditions is true, it means that the pizza is new or doesn't already exist in the database. And that would return a `ResponseEntity` with a 200 OK status code and a body containing the saved `PizzaEntity`. `this.pizzaService.save(pizza)` likely saves the `PizzaEntity` to a database and returns the saved instance. If none of the conditions in the `if` statement were met, this line is executed. It returns a `ResponseEntity` with a 400 Bad Request status code. `.build()` creates a `ResponseEntity` with no body.
 
-## Put Mapping
+## PUT
 
+Is an annotation used to handle _HTTP PUT_ requests. It is part of the **Spring Web module** and is typically used in combination with the `@RestController` annotation to define methods that will handle _PUT_ requests for a specific endpoint.
+
+Here is an exmaple:
+
+```java
+@PutMapping("/users/{userId}")
+@ResponseBody
+public String updateUserById(@PathVariable Long userId, @RequestBody User updatedUser) {
+    userService.updateUser(userId, updatedUser);
+    return "User updated successfully";
+}
+```
+
+- `@PutMapping("/users/{userId}")`: This annotation indicates that the updateUserById method will handle HTTP PUT requests for the "/users/{userId}" endpoint. The {userId} is a path variable that will be extracted from the URI.
+- `@PathVariable Long userId`: This annotation is used to extract the userId from the URI.
+- `@RequestBody User updatedUser`: This annotation is used to bind the request body to the updatedUser parameter. The request body should contain the updated user information in the JSON format.
+- `userService.updateUser(userId, updatedUser)`: This line invokes the updateUser method in the UserService to update the user with the given ID.
+- `@ResponseBody`: Is used to indicate that the return value of a method should be directly written to the response body of the HTTP response. Spring will use a suitable message converter (e.g., Jackson for JSON or JAXB for XML) to convert the return value of the method into the desired format and then write it directly to the HTTP response.
+
+## DELETE
